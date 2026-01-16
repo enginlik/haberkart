@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Moveable from 'react-moveable';
 import Selecto from 'react-selecto';
 import { Template, TemplateElement } from '@news-card/schema';
-import { Preview } from '@/components/Preview';
+import { Preview } from '../../../components/Preview';
 
 export default function EditorPage() {
     // Mock Template State (In real app, load from API)
