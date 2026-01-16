@@ -13,13 +13,32 @@ export function Preview({ template, data }: PreviewProps) {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        setError(null);
-        renderTemplateToSvg(template, data, [])
-            .then(svgString => setSvg(svgString))
-            .catch(err => {
+        async function render() {
+            setError(null);
+            try {
+                // Fetch a standard font (Roboto) so Satori can calculate layout
+                // Using WOFF format which is supported by Satori
+                const fontUrl = 'https://cdn.jsdelivr.net/npm/@fontsource/roboto/files/roboto-latin-400-normal.woff';
+                const fontRes = await fetch(fontUrl);
+                if (!fontRes.ok) throw new Error(`Failed to load font: ${fontRes.statusText}`);
+                const fontData = await fontRes.arrayBuffer();
+
+                const svgString = await renderTemplateToSvg(template, data, [
+                    {
+                        name: 'Roboto',
+                        data: fontData,
+                        weight: 400,
+                        style: 'normal'
+                    }
+                ]);
+                setSvg(svgString);
+            } catch (err: any) {
                 console.error("Satori Render Error:", err);
                 setError(err.message || 'Unknown render error');
-            });
+            }
+        }
+
+        render();
     }, [template, data]);
 
     if (error) return <div className="text-red-500 p-4 border border-red-300 bg-red-50">Error: {error}</div>;
