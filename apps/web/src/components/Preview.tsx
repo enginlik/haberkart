@@ -23,7 +23,18 @@ export function Preview({ template, data }: PreviewProps) {
                 if (!fontRes.ok) throw new Error(`Failed to load font: ${fontRes.statusText}`);
                 const fontData = await fontRes.arrayBuffer();
 
-                const svgString = await renderTemplateToSvg(template, data, [
+                // Clone template to avoid mutating state
+                const proxyTemplate = JSON.parse(JSON.stringify(template));
+
+                // Rewrite image URLs to use Proxy
+                proxyTemplate.elements.forEach((el: any) => {
+                    if (el.type === 'image' && el.src && el.src.startsWith('http')) {
+                        // Use the local proxy to bypass CORS
+                        el.src = `/api/proxy?url=${encodeURIComponent(el.src)}`;
+                    }
+                });
+
+                const svgString = await renderTemplateToSvg(proxyTemplate, data, [
                     {
                         name: 'Roboto',
                         data: fontData,

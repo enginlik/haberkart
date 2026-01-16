@@ -57,6 +57,40 @@ export default function EditorPage() {
         // To make it easy, we'll assume standard absolute positioning.
     };
 
+    const [isSaving, setIsSaving] = useState(false);
+
+    const handleExport = async () => {
+        setIsSaving(true);
+        try {
+            // In a real app, we would save the "Template" to the DB first, then create a Job.
+            // For this v1 Fast-Track, we will assume we are sending a "Render Job" for this template.
+
+            // Note: The API expects `JobInputSchema` which requires `templateId` and `data`.
+            const response = await fetch('http://localhost:3001/v1/jobs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    templateId: "temp-123", // Placeholder
+                    data: {
+                        // In a real app, we extract {{variables}} from content. 
+                        // Here we just pass empty data because our template has hardcoded text "BREAKING NEWS".
+                    }
+                })
+            });
+
+            if (!response.ok) throw new Error('API Error');
+
+            const result = await response.json();
+            alert(`✅ İş Başlatıldı! Job ID: ${result.jobId}`);
+
+        } catch (err) {
+            console.error(err);
+            alert('❌ Hata oluştu: Sunucuya bağlanılamadı.');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
     return (
         <div className="flex h-screen bg-gray-100">
 
@@ -290,9 +324,13 @@ export default function EditorPage() {
                 </div>
 
                 <div className="p-4 border-t bg-gray-50">
-                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold shadow-sm transition-all flex items-center justify-center gap-2">
-                        <span>🚀</span>
-                        <span>Dışa Aktar / Üret</span>
+                    <button
+                        onClick={handleExport}
+                        disabled={isSaving}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold shadow-sm transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                        <span>{isSaving ? '⏳' : '🚀'}</span>
+                        <span>{isSaving ? 'İşleniyor...' : 'Dışa Aktar / Üret'}</span>
                     </button>
                     <p className="text-xs text-center text-gray-400 mt-2">v2.0-beta</p>
                 </div>
