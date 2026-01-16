@@ -1,0 +1,15 @@
+{
+    "name": "api",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "build": "tsc"
+    },
+    "dependencies": {
+        "fastify": "^4.25.2",
+        "@fastify/cors": "^8.5.0",
+        "@news-card/schema": "workspace:*",
+        "@news-card/database": "workspace:*"
+    }
+}

@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  workspaces WorkspaceMember[]
+}
+
+model Workspace {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members   WorkspaceMember[]
+  jobs      Job[]
+  templates Template[]
+}
+
+model WorkspaceMember {
+  id          String    @id @default(uuid())
+  userId      String
+  workspaceId String
+  role        String    @default("MEMBER") // OWNER, MEMBER
+  
+  user        User      @relation(fields: [userId], references: [id])
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+  @@unique([userId, workspaceId])
+}
+
+model Template {
+  id          String   @id @default(uuid())
+  name        String
+  workspaceId String?  // Null means system template
+  config      Json     // The JSON definition for Satori
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id])
+  jobs        Job[]
+}
+
+model Job {
+  id          String   @id @default(uuid())
+  workspaceId String
+  templateId  String
+  data        Json     // The input data (text, image url, etc.)
+  status      String   @default("PENDING") // PENDING, PROCESSING, COMPLETED, FAILED
+  result      Json?    // JobOutput data
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  template    Template  @relation(fields: [templateId], references: [id])
+  outputs     JobOutput[]
+}
+
+model JobOutput {
+  id        String   @id @default(uuid())
+  jobId     String
+  format    String   // 'post', 'story'
+  url       String   // MinIO URL
+  width     Int
+  height    Int
+  createdAt DateTime @default(now())
+
+  job       Job      @relation(fields: [jobId], references: [id])
+}
