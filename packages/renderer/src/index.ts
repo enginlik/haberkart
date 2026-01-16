@@ -52,6 +52,8 @@ export async function renderTemplateToSvg(
                 type: 'img',
                 props: {
                     src: el.src,
+                    width: el.width,
+                    height: el.height,
                     style: {
                         ...style,
                         objectFit: 'cover' // Default behavior
