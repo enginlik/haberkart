@@ -36,9 +36,6 @@ export default function EditorPage() {
         }));
     };
 
-    return (
-        <div className="flex h-screen bg-gray-100">
-
     const selectedElementId = targets.length > 0 ? targets[0].getAttribute('data-id') : null;
     const selectedElement = template.elements.find(el => el.id === selectedElementId);
 
@@ -60,217 +57,217 @@ export default function EditorPage() {
         // To make it easy, we'll assume standard absolute positioning.
     };
 
-            return (
-            <div className="flex h-screen bg-gray-100">
+    return (
+        <div className="flex h-screen bg-gray-100">
 
-                {/* Sidebar - Properties */}
-                <div className="w-80 bg-white border-r p-6 overflow-y-auto flex flex-col gap-6">
-                    <h2 className="font-bold text-xl border-b pb-2">Properties</h2>
+            {/* Sidebar - Properties */}
+            <div className="w-80 bg-white border-r p-6 overflow-y-auto flex flex-col gap-6">
+                <h2 className="font-bold text-xl border-b pb-2">Properties</h2>
 
-                    {selectedElement ? (
-                        <div className="flex flex-col gap-4">
-                            <div className="text-xs font-mono text-gray-500 mb-2">ID: {selectedElement.id} ({selectedElement.type})</div>
+                {selectedElement ? (
+                    <div className="flex flex-col gap-4">
+                        <div className="text-xs font-mono text-gray-500 mb-2">ID: {selectedElement.id} ({selectedElement.type})</div>
 
-                            {/* Common Properties */}
-                            <div className="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label className="text-xs font-bold text-gray-600 block mb-1">X</label>
-                                    <input
-                                        type="number"
-                                        value={selectedElement.x}
-                                        onChange={e => updateElement(selectedElement.id, { x: Number(e.target.value) })}
-                                        className="w-full border p-1 rounded text-sm"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-xs font-bold text-gray-600 block mb-1">Y</label>
-                                    <input
-                                        type="number"
-                                        value={selectedElement.y}
-                                        onChange={e => updateElement(selectedElement.id, { y: Number(e.target.value) })}
-                                        className="w-full border p-1 rounded text-sm"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-xs font-bold text-gray-600 block mb-1">Width</label>
-                                    <input
-                                        type="number"
-                                        value={selectedElement.width}
-                                        onChange={e => updateElement(selectedElement.id, { width: Number(e.target.value) })}
-                                        className="w-full border p-1 rounded text-sm"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-xs font-bold text-gray-600 block mb-1">Height</label>
-                                    <input
-                                        type="number"
-                                        value={selectedElement.height}
-                                        onChange={e => updateElement(selectedElement.id, { height: Number(e.target.value) })}
-                                        className="w-full border p-1 rounded text-sm"
-                                    />
-                                </div>
+                        {/* Common Properties */}
+                        <div className="grid grid-cols-2 gap-2">
+                            <div>
+                                <label className="text-xs font-bold text-gray-600 block mb-1">X</label>
+                                <input
+                                    type="number"
+                                    value={selectedElement.x}
+                                    onChange={e => updateElement(selectedElement.id, { x: Number(e.target.value) })}
+                                    className="w-full border p-1 rounded text-sm"
+                                />
                             </div>
+                            <div>
+                                <label className="text-xs font-bold text-gray-600 block mb-1">Y</label>
+                                <input
+                                    type="number"
+                                    value={selectedElement.y}
+                                    onChange={e => updateElement(selectedElement.id, { y: Number(e.target.value) })}
+                                    className="w-full border p-1 rounded text-sm"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-gray-600 block mb-1">Width</label>
+                                <input
+                                    type="number"
+                                    value={selectedElement.width}
+                                    onChange={e => updateElement(selectedElement.id, { width: Number(e.target.value) })}
+                                    className="w-full border p-1 rounded text-sm"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-gray-600 block mb-1">Height</label>
+                                <input
+                                    type="number"
+                                    value={selectedElement.height}
+                                    onChange={e => updateElement(selectedElement.id, { height: Number(e.target.value) })}
+                                    className="w-full border p-1 rounded text-sm"
+                                />
+                            </div>
+                        </div>
 
-                            {/* Text Specific Properties */}
-                            {selectedElement.type === 'text' && (
-                                <>
-                                    <div>
-                                        <label className="text-xs font-bold text-gray-600 block mb-1">Content</label>
-                                        <textarea
-                                            value={selectedElement.content || ''}
-                                            onChange={e => updateElement(selectedElement.id, { content: e.target.value })}
-                                            className="w-full border p-2 rounded text-sm h-24"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="text-xs font-bold text-gray-600 block mb-1">Color</label>
-                                        <input
-                                            type="color"
-                                            value={selectedElement.style?.color || '#000000'}
-                                            onChange={e => updateElement(selectedElement.id, { style: { ...selectedElement.style, color: e.target.value } })}
-                                            className="w-full h-8 cursor-pointer"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="text-xs font-bold text-gray-600 block mb-1">Font Size</label>
-                                        <input
-                                            type="text"
-                                            value={selectedElement.style?.fontSize || '16px'}
-                                            onChange={e => updateElement(selectedElement.id, { style: { ...selectedElement.style, fontSize: e.target.value } })}
-                                            className="w-full border p-1 rounded text-sm"
-                                        />
-                                    </div>
-                                </>
-                            )}
-
-                            {/* Image Specific Properties */}
-                            {selectedElement.type === 'image' && (
+                        {/* Text Specific Properties */}
+                        {selectedElement.type === 'text' && (
+                            <>
                                 <div>
-                                    <label className="text-xs font-bold text-gray-600 block mb-1">Image URL</label>
+                                    <label className="text-xs font-bold text-gray-600 block mb-1">Content</label>
+                                    <textarea
+                                        value={selectedElement.content || ''}
+                                        onChange={e => updateElement(selectedElement.id, { content: e.target.value })}
+                                        className="w-full border p-2 rounded text-sm h-24"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-gray-600 block mb-1">Color</label>
+                                    <input
+                                        type="color"
+                                        value={selectedElement.style?.color || '#000000'}
+                                        onChange={e => updateElement(selectedElement.id, { style: { ...selectedElement.style, color: e.target.value } })}
+                                        className="w-full h-8 cursor-pointer"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-gray-600 block mb-1">Font Size</label>
                                     <input
                                         type="text"
-                                        value={selectedElement.src || ''}
-                                        onChange={e => updateElement(selectedElement.id, { src: e.target.value })}
-                                        className="w-full border p-2 rounded text-sm"
+                                        value={selectedElement.style?.fontSize || '16px'}
+                                        onChange={e => updateElement(selectedElement.id, { style: { ...selectedElement.style, fontSize: e.target.value } })}
+                                        className="w-full border p-1 rounded text-sm"
                                     />
                                 </div>
-                            )}
-                        </div>
-                    ) : (
-                        <div className="flex flex-col items-center justify-center h-full text-gray-400 text-center">
-                            <span className="text-4xl mb-2">👆</span>
-                            <p className="text-sm">Canvas üzerinden düzenlemek istediğiniz öğeye tıklayın.</p>
-                        </div>
-                    )}
-                </div>
+                            </>
+                        )}
 
-                {/* Main Canvas Area */}
-                <div className="flex-1 flex justify-center items-center overflow-hidden p-10 relative bg-gray-50 from-gray-50 to-gray-200" id="canvas-area">
-
-                    {/* The Live Rendered Template (Interactivity Layer) */}
-                    <div
-                        className="relative bg-white shadow-2xl transition-all duration-200 ease-out"
-                        style={{
-                            width: template.width,
-                            height: template.height,
-                            transform: 'scale(0.5)', // Scale down to fit screen
-                            transformOrigin: 'center center'
-                        }}
-                    >
-                        {template.elements.map(el => (
-                            <div
-                                key={el.id}
-                                className="absolute target-element border hover:border-blue-400 cursor-move"
-                                data-id={el.id}
-                                style={{
-                                    left: el.x, top: el.y, width: el.width, height: el.height,
-                                    ...el.style,
-                                    position: 'absolute'
-                                }}
-                            >
-                                {el.type === 'text' ? el.content : null}
-                                {el.type === 'image' ? <img src={el.src} className="w-full h-full object-cover pointer-events-none" /> : null}
+                        {/* Image Specific Properties */}
+                        {selectedElement.type === 'image' && (
+                            <div>
+                                <label className="text-xs font-bold text-gray-600 block mb-1">Image URL</label>
+                                <input
+                                    type="text"
+                                    value={selectedElement.src || ''}
+                                    onChange={e => updateElement(selectedElement.id, { src: e.target.value })}
+                                    className="w-full border p-2 rounded text-sm"
+                                />
                             </div>
-                        ))}
+                        )}
                     </div>
+                ) : (
+                    <div className="flex flex-col items-center justify-center h-full text-gray-400 text-center">
+                        <span className="text-4xl mb-2">👆</span>
+                        <p className="text-sm">Canvas üzerinden düzenlemek istediğiniz öğeye tıklayın.</p>
+                    </div>
+                )}
+            </div>
 
-                    {/* Moveable Controller */}
-                    <Moveable
-                        target={targets}
-                        draggable={true}
-                        resizable={true}
-                        rotatable={true}
-                        snappable={true}
-                        bounds={{ left: 0, top: 0, bottom: 0, right: 0, position: "css" }}
+            {/* Main Canvas Area */}
+            <div className="flex-1 flex justify-center items-center overflow-hidden p-10 relative bg-gray-50 from-gray-50 to-gray-200" id="canvas-area">
 
-                        /* DRAG EVENTS */
-                        onDrag={e => {
-                            e.target.style.transform = e.transform;
-                        }}
-                        onDragEnd={e => {
-                            // Sync visual position back to state (Simplified for Demo)
-                            // Real implementation would calculate exact matrix
-                            // Here we assume simple translation for now or just skip drag-sync for this step
-                            // to focus on sidebar-sync as requested.
-                            const id = e.target.getAttribute('data-id');
-                            const el = template.elements.find(x => x.id === id);
-                            if (el) {
-                                // This is tricky without matrix parsing library. 
-                                // For this iteration, let's allow visual drag but it wont persist to Satori 
-                                // until we manipulate X/Y in sidebar. 
-                                // User specifically asked for "Sidebar Text Input -> Preview" flow.
-                            }
-                        }}
-
-                        /* RESIZE EVENTS */
-                        onResize={e => {
-                            e.target.style.width = `${e.width}px`;
-                            e.target.style.height = `${e.height}px`;
-                            e.target.style.transform = e.drag.transform;
-                        }}
-                    />
-
-                    <Selecto
-                        dragContainer={"#canvas-area"}
-                        selectableTargets={[".target-element"]}
-                        hitRate={0}
-                        selectByClick={true}
-                        selectFromInside={false}
-                        onSelect={e => {
-                            setTargets(e.selected);
-                        }}
-                    />
-
+                {/* The Live Rendered Template (Interactivity Layer) */}
+                <div
+                    className="relative bg-white shadow-2xl transition-all duration-200 ease-out"
+                    style={{
+                        width: template.width,
+                        height: template.height,
+                        transform: 'scale(0.5)', // Scale down to fit screen
+                        transformOrigin: 'center center'
+                    }}
+                >
+                    {template.elements.map(el => (
+                        <div
+                            key={el.id}
+                            className="absolute target-element border hover:border-blue-400 cursor-move"
+                            data-id={el.id}
+                            style={{
+                                left: el.x, top: el.y, width: el.width, height: el.height,
+                                ...el.style,
+                                position: 'absolute'
+                            }}
+                        >
+                            {el.type === 'text' ? el.content : null}
+                            {el.type === 'image' ? <img src={el.src} className="w-full h-full object-cover pointer-events-none" /> : null}
+                        </div>
+                    ))}
                 </div>
 
-                {/* Right Panel - Satori Preview & Export */}
-                <div className="w-96 bg-white border-l flex flex-col shadow-lg z-10">
-                    <div className="p-4 border-b bg-gray-50">
-                        <h2 className="font-bold text-gray-800">Canlı Önizleme (Satori)</h2>
-                        <p className="text-xs text-gray-500 mt-1">Sunucu tarafında oluşturulan gerçek çıktı.</p>
-                    </div>
+                {/* Moveable Controller */}
+                <Moveable
+                    target={targets}
+                    draggable={true}
+                    resizable={true}
+                    rotatable={true}
+                    snappable={true}
+                    bounds={{ left: 0, top: 0, bottom: 0, right: 0, position: "css" }}
 
-                    <div className="p-6 flex-1 bg-gray-100 flex items-center justify-center">
-                        <div className="border border-gray-300 bg-white shadow-md relative group">
-                            {/* 
+                    /* DRAG EVENTS */
+                    onDrag={e => {
+                        e.target.style.transform = e.transform;
+                    }}
+                    onDragEnd={e => {
+                        // Sync visual position back to state (Simplified for Demo)
+                        // Real implementation would calculate exact matrix
+                        // Here we assume simple translation for now or just skip drag-sync for this step
+                        // to focus on sidebar-sync as requested.
+                        const id = e.target.getAttribute('data-id');
+                        const el = template.elements.find(x => x.id === id);
+                        if (el) {
+                            // This is tricky without matrix parsing library. 
+                            // For this iteration, let's allow visual drag but it wont persist to Satori 
+                            // until we manipulate X/Y in sidebar. 
+                            // User specifically asked for "Sidebar Text Input -> Preview" flow.
+                        }
+                    }}
+
+                    /* RESIZE EVENTS */
+                    onResize={e => {
+                        e.target.style.width = `${e.width}px`;
+                        e.target.style.height = `${e.height}px`;
+                        e.target.style.transform = e.drag.transform;
+                    }}
+                />
+
+                <Selecto
+                    dragContainer={"#canvas-area"}
+                    selectableTargets={[".target-element"]}
+                    hitRate={0}
+                    selectByClick={true}
+                    selectFromInside={false}
+                    onSelect={e => {
+                        setTargets(e.selected);
+                    }}
+                />
+
+            </div>
+
+            {/* Right Panel - Satori Preview & Export */}
+            <div className="w-96 bg-white border-l flex flex-col shadow-lg z-10">
+                <div className="p-4 border-b bg-gray-50">
+                    <h2 className="font-bold text-gray-800">Canlı Önizleme (Satori)</h2>
+                    <p className="text-xs text-gray-500 mt-1">Sunucu tarafında oluşturulan gerçek çıktı.</p>
+                </div>
+
+                <div className="p-6 flex-1 bg-gray-100 flex items-center justify-center">
+                    <div className="border border-gray-300 bg-white shadow-md relative group">
+                        {/* 
                            This component uses the shared Renderer package.
                            It re-renders whenever `template` changes.
                         */}
-                            <Preview template={template} data={{}} />
+                        <Preview template={template} data={{}} />
 
-                            <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors pointer-events-none" />
-                        </div>
-                    </div>
-
-                    <div className="p-4 border-t bg-gray-50">
-                        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold shadow-sm transition-all flex items-center justify-center gap-2">
-                            <span>🚀</span>
-                            <span>Dışa Aktar / Üret</span>
-                        </button>
-                        <p className="text-xs text-center text-gray-400 mt-2">v2.0-beta</p>
+                        <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors pointer-events-none" />
                     </div>
                 </div>
 
+                <div className="p-4 border-t bg-gray-50">
+                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold shadow-sm transition-all flex items-center justify-center gap-2">
+                        <span>🚀</span>
+                        <span>Dışa Aktar / Üret</span>
+                    </button>
+                    <p className="text-xs text-center text-gray-400 mt-2">v2.0-beta</p>
+                </div>
             </div>
-            );
+
+        </div>
+    );
 }
