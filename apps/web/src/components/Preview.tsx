@@ -10,14 +10,19 @@ interface PreviewProps {
 export function Preview({ template, data }: PreviewProps) {
     const [svg, setSvg] = useState<string>('');
 
+    const [error, setError] = useState<string | null>(null);
+
     useEffect(() => {
-        // In a real app, loading fonts might be async or require API
-        // Here we call the shared render logic
+        setError(null);
         renderTemplateToSvg(template, data, [])
             .then(svgString => setSvg(svgString))
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error("Satori Render Error:", err);
+                setError(err.message || 'Unknown render error');
+            });
     }, [template, data]);
 
+    if (error) return <div className="text-red-500 p-4 border border-red-300 bg-red-50">Error: {error}</div>;
     if (!svg) return <div>Loading Preview...</div>;
 
     return (
