@@ -196,7 +196,7 @@ export default function EditorPage() {
                     target={targets}
                     draggable={true}
                     resizable={true}
-                    rotatable={true}
+                    rotatable={false} // Disable rotation for v1 simplicity
                     snappable={true}
                     bounds={{ left: 0, top: 0, bottom: 0, right: 0, position: "css" }}
 
@@ -205,17 +205,22 @@ export default function EditorPage() {
                         e.target.style.transform = e.transform;
                     }}
                     onDragEnd={e => {
-                        // Sync visual position back to state (Simplified for Demo)
-                        // Real implementation would calculate exact matrix
-                        // Here we assume simple translation for now or just skip drag-sync for this step
-                        // to focus on sidebar-sync as requested.
                         const id = e.target.getAttribute('data-id');
                         const el = template.elements.find(x => x.id === id);
-                        if (el) {
-                            // This is tricky without matrix parsing library. 
-                            // For this iteration, let's allow visual drag but it wont persist to Satori 
-                            // until we manipulate X/Y in sidebar. 
-                            // User specifically asked for "Sidebar Text Input -> Preview" flow.
+
+                        if (el && e.lastEvent) {
+                            // Moveable returns `translate` delta in `drag` event that accumulates.
+                            // e.lastEvent.translate is [x, y] translation relative to start.
+                            const [translateX, translateY] = e.lastEvent.translate;
+
+                            // Update state with new X/Y
+                            updateElement(id!, {
+                                x: el.x + translateX,
+                                y: el.y + translateY
+                            });
+
+                            // Reset transform visually because React will re-render with new left/top
+                            e.target.style.transform = '';
                         }
                     }}
 
@@ -224,6 +229,31 @@ export default function EditorPage() {
                         e.target.style.width = `${e.width}px`;
                         e.target.style.height = `${e.height}px`;
                         e.target.style.transform = e.drag.transform;
+                    }}
+                    onResizeEnd={e => {
+                        const id = e.target.getAttribute('data-id');
+                        if (id && e.lastEvent) {
+                            // e.lastEvent.width/height are the final dimensions
+                            // e.lastEvent.drag.translate is the position change caused by resizing (e.g. from left)
+
+                            const width = e.lastEvent.width;
+                            const height = e.lastEvent.height;
+                            const [translateX, translateY] = e.lastEvent.drag.translate;
+
+                            const el = template.elements.find(x => x.id === id);
+                            if (el) {
+                                updateElement(id, {
+                                    width,
+                                    height,
+                                    x: el.x + translateX,
+                                    y: el.y + translateY
+                                });
+
+                                // Reset visual styles
+                                e.target.style.transform = '';
+                                // Width/Height will be set by React render
+                            }
+                        }
                     }}
                 />
 
